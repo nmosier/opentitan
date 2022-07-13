@@ -570,7 +570,9 @@ inline uintptr_t ct_cmovw(ct_boolw_t c, uintptr_t a, uintptr_t b) {
  *
  * If it is reached anyways, an illegal instruction will be executed.
  */
+#ifndef HARDENED_UNREACHABLE
 #define HARDENED_UNREACHABLE() HARDENED_UNREACHABLE_()
+#endif
 
 /**
  * Compare two values in a way that is *manifestly* true: that is, under normal
