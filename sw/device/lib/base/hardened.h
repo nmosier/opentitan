@@ -564,6 +564,8 @@ inline uintptr_t ct_cmovw(ct_boolw_t c, uintptr_t a, uintptr_t b) {
 #ifndef HARDENED_UNREACHABLE_SHOULD_EXIT
 #define HARDENED_UNREACHABLE_() assert(false)
 #else
+#include <stdio.h>
+#include <stdlib.h>
 #define HARDENED_UNREACHABLE_()                                  \
   do {                                                           \
     fprintf(stderr, "%s:%d: unreachable\n", __FILE__, __LINE__); \
