@@ -33,6 +33,9 @@ static rom_error_t is_locked(void) {
   return kErrorOk;
 }
 
+#ifndef OT_PLATFORM_RV32
+__attribute__((weak))
+#endif
 volatile retention_sram_t *retention_sram_get(void) {
   static_assert(sizeof(retention_sram_t) == TOP_EARLGREY_RAM_RET_AON_SIZE_BYTES,
                 "Unexpected retention SRAM size.");
