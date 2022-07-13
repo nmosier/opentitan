@@ -47,7 +47,9 @@ noreturn
  * Mask ROM hardware exception handler.
  */
 MASK_ROM_VECTOR_FUNCTION
+#ifdef OT_PLATFORM_RV32
 MASK_ROM_INTERRUPT_HANDLER_ABI
+#endif
 void mask_rom_interrupt_handler(void);
 
 #ifdef __cplusplus
