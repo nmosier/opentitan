@@ -561,7 +561,15 @@ inline uintptr_t ct_cmovw(ct_boolw_t c, uintptr_t a, uintptr_t b) {
 
 #define HARDENED_CHECK_(op_, a_, b_) assert((uint64_t)(a_)op_(uint64_t)(b_))
 
+#ifndef HARDENED_UNREACHABLE_SHOULD_EXIT
 #define HARDENED_UNREACHABLE_() assert(false)
+#else
+#define HARDENED_UNREACHABLE()                                   \
+  do {                                                           \
+    fprintf(stderr, "%s:%d: unreachable\n", __FILE__, __LINE__); \
+    exit(EXIT_FAILURE);                                          \
+  } while (0)
+#endif
 #endif  // OT_PLATFORM_RV32
 
 /**
@@ -570,9 +578,7 @@ inline uintptr_t ct_cmovw(ct_boolw_t c, uintptr_t a, uintptr_t b) {
  *
  * If it is reached anyways, an illegal instruction will be executed.
  */
-#ifndef HARDENED_UNREACHABLE
 #define HARDENED_UNREACHABLE() HARDENED_UNREACHABLE_()
-#endif
 
 /**
  * Compare two values in a way that is *manifestly* true: that is, under normal
