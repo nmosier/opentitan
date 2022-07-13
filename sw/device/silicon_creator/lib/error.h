@@ -177,6 +177,15 @@ typedef enum rom_error {
     HARDENED_CHECK_EQ(error_, kErrorOk); \
   } while (false)
 
+/**
+ * Convert a ROM error code to a string.
+ *
+ * @param err ROM error code to convert
+ *
+ * @return a string holding the corresponding enum's name, or NULL if the error code is invalid.
+ */
+const char *rom_error_strerror(rom_error_t err);
+
 #ifdef __cplusplus
 }
 #endif
