@@ -37,7 +37,11 @@ void _mask_rom_start_boot(void);
 /**
  * The first C function executed by the Mask ROM (defined in `mask_rom.c`)
  */
-noreturn void mask_rom_main(void);
+#ifdef OT_PLATFORM_RV32
+noreturn
+#endif
+    void
+    mask_rom_main(void);
 
 /**
  * Mask ROM hardware exception handler.
