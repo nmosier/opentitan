@@ -156,6 +156,9 @@ static rom_error_t wait_for_done(rom_error_t error) {
   uint32_t op_status;
   do {
     op_status = abs_mmio_read32(kBase + FLASH_CTRL_OP_STATUS_REG_OFFSET);
+#if !defined(OT_PLATFORM_RV32) && defined(FUZZ)
+    op_status = bitfield_bit32_write(op_status, FLASH_CTRL_OP_STATUS_DONE_BIT, 1);
+#endif
   } while (!bitfield_bit32_read(op_status, FLASH_CTRL_OP_STATUS_DONE_BIT));
   abs_mmio_write32(kBase + FLASH_CTRL_OP_STATUS_REG_OFFSET, 0u);
 
