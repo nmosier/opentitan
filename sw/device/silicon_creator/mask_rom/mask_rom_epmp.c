@@ -97,8 +97,8 @@ void mask_rom_epmp_unlock_rom_ext_rx(epmp_state_t *state,
   //             +-----------+-----------+-----------+-----------+
   // `pmpcfg1` = | `pmp7cfg` | `pmp6cfg` | `pmp5cfg` | `pmp4cfg` |
   //             +-----------+-----------+-----------+-----------+
-  CSR_WRITE(CSR_REG_PMPADDR3, region.start >> 2);
-  CSR_WRITE(CSR_REG_PMPADDR4, region.end >> 2);
+  CSR_WRITE(CSR_REG_PMPADDR3, (uint32_t) (region.start >> 2));
+  CSR_WRITE(CSR_REG_PMPADDR4, (uint32_t) (region.end >> 2));
   CSR_CLEAR_BITS(CSR_REG_PMPCFG1, 0xff);
   CSR_SET_BITS(CSR_REG_PMPCFG1, kEpmpModeTor | kEpmpPermLockedReadExecute);
 }
@@ -120,7 +120,7 @@ void mask_rom_epmp_unlock_rom_ext_r(epmp_state_t *state, epmp_region_t region) {
   //             +-----------+-----------+-----------+-----------+
 
   CSR_WRITE(CSR_REG_PMPADDR6,
-            region.start >> 2 | (region.end - region.start - 1) >> 3);
+            (uint32_t) (region.start >> 2 | (region.end - region.start - 1) >> 3));
   CSR_CLEAR_BITS(CSR_REG_PMPCFG1, 0xff << 16);
   CSR_SET_BITS(CSR_REG_PMPCFG1,
                ((kEpmpModeNapot | kEpmpPermLockedReadOnly) << 16));
