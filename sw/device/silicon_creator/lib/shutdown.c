@@ -6,6 +6,10 @@
 
 #include <assert.h>
 
+#ifndef OT_PLATFORM_RV32
+#include <stdio.h>
+#endif
+
 #include "sw/device/lib/arch/device.h"
 #include "sw/device/lib/base/abs_mmio.h"
 #include "sw/device/lib/base/bitfield.h"
@@ -391,6 +395,18 @@ SHUTDOWN_FUNC(NO_MODIFIERS, shutdown_report_error(rom_error_t reason)) {
                             UART_STATUS_TXIDLE_BIT);
     CSR_READ(CSR_REG_MCYCLE, &mcycle);
   } while (mcycle < kUartTxFifoCpuCycles && !tx_idle);
+#endif
+
+#ifndef OT_PLATFORM_RV32
+  // Print out error code string
+  const char *reason_str = rom_error_strerror(reason);
+  fprintf(stderr, "%s: ", __FUNCTION__);
+  if (reason_str) {
+    fprintf(stderr, "%s", reason_str);
+  } else {
+    fprintf(stderr, "%d", reason);
+  }
+  fprintf(stderr, "\n");
 #endif
 }
 
