@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
+#include <stdbool.h>
+
 #include "sw/device/lib/base/hardened.h"
 
 // `extern` declarations to give the inline functions in the corresponding
@@ -25,3 +27,9 @@ extern ct_boolw_t ct_sgeuw(uintptr_t, uintptr_t);
 extern ct_boolw_t ct_seqzw(uintptr_t);
 extern ct_boolw_t ct_seqw(uintptr_t, uintptr_t);
 extern uintptr_t ct_cmovw(ct_boolw_t, uintptr_t, uintptr_t);
+
+#ifndef OT_PLATFORM_RV32
+_Noreturn __attribute__((weak)) void hardened_unreachable(const char *file, int line) {
+  assert(false);
+}
+#endif

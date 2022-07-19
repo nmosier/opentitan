@@ -561,7 +561,9 @@ inline uintptr_t ct_cmovw(ct_boolw_t c, uintptr_t a, uintptr_t b) {
 
 #define HARDENED_CHECK_(op_, a_, b_) assert((uint64_t)(a_)op_(uint64_t)(b_))
 
-#define HARDENED_UNREACHABLE_() assert(false)
+_Noreturn void hardened_unreachable(const char *file, int line);
+#define HARDENED_UNREACHABLE_() (hardened_unreachable(__FILE__, __LINE__))
+
 #endif  // OT_PLATFORM_RV32
 
 /**
