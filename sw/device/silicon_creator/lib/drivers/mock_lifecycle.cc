@@ -4,6 +4,8 @@
 
 #include "sw/device/silicon_creator/lib/drivers/mock_lifecycle.h"
 
+#ifndef FUZZ
+
 namespace mask_rom_test {
 extern "C" {
 lifecycle_state_t lifecycle_state_get(void) {
@@ -23,3 +25,5 @@ void lifecycle_hw_rev_get(lifecycle_hw_rev_t *hw_rev) {
 }
 }  // extern "C"
 }  // namespace mask_rom_test
+
+#endif

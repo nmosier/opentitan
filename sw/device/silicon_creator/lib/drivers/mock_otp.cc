@@ -4,6 +4,8 @@
 
 #include "sw/device/silicon_creator/lib/drivers/mock_otp.h"
 
+#ifndef FUZZ
+
 namespace mask_rom_test {
 extern "C" {
 // Note: In the functions below, we use `MockOtp` only for conciseness. The
@@ -27,3 +29,5 @@ void otp_creator_sw_cfg_lockdown(void) {
 }
 }  // extern "C"
 }  // namespace mask_rom_test
+
+#endif
