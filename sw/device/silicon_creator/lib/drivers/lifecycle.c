@@ -64,14 +64,14 @@ lifecycle_state_t lifecycle_state_get(void) {
   }
 }
 
-uint32_t lifecycle_raw_state_get(void) {
+OT_WEAK uint32_t lifecycle_raw_state_get(void) {
   uint32_t value = bitfield_field32_read(
       sec_mmio_read32(kBase + LC_CTRL_LC_STATE_REG_OFFSET),
       LC_CTRL_LC_STATE_STATE_FIELD);
   return value;
 }
 
-void lifecycle_device_id_get(lifecycle_device_id_t *device_id) {
+OT_WEAK void lifecycle_device_id_get(lifecycle_device_id_t *device_id) {
   static_assert(
       kLifecycleDeviceIdNumWords == LC_CTRL_PARAM_NUM_DEVICE_ID_WORDS,
       "length of the device_id array does not match the length in hardware");
@@ -82,7 +82,7 @@ void lifecycle_device_id_get(lifecycle_device_id_t *device_id) {
   }
 }
 
-void lifecycle_hw_rev_get(lifecycle_hw_rev_t *hw_rev) {
+OT_WEAK void lifecycle_hw_rev_get(lifecycle_hw_rev_t *hw_rev) {
   uint32_t reg = sec_mmio_read32(kBase + LC_CTRL_HW_REV_REG_OFFSET);
   *hw_rev = (lifecycle_hw_rev_t){
       .chip_gen = bitfield_field32_read(reg, LC_CTRL_HW_REV_CHIP_GEN_FIELD),

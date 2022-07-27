@@ -192,11 +192,16 @@ static hardened_bool_t sigverify_use_sw_rsa_verify(lifecycle_state_t lc_state) {
   }
 }
 
-rom_error_t sigverify_rsa_verify(const sigverify_rsa_buffer_t *signature,
-                                 const sigverify_rsa_key_t *key,
-                                 const hmac_digest_t *act_digest,
-                                 lifecycle_state_t lc_state,
-                                 uint32_t *flash_exec) {
+OT_WEAK OT_ALIAS("unmocked_sigverify_rsa_verify") rom_error_t sigverify_rsa_verify(const sigverify_rsa_buffer_t *signature,
+                                                                                   const sigverify_rsa_key_t *key,
+                                                                                   const hmac_digest_t *act_digest,
+                                                                                   lifecycle_state_t lc_state,
+                                                                                   uint32_t *flash_exec);
+rom_error_t unmocked_sigverify_rsa_verify(const sigverify_rsa_buffer_t *signature,
+                                          const sigverify_rsa_key_t *key,
+                                          const hmac_digest_t *act_digest,
+                                          lifecycle_state_t lc_state,
+                                          uint32_t *flash_exec) {
   *flash_exec = UINT32_MAX;
   hardened_bool_t use_sw = sigverify_use_sw_rsa_verify(lc_state);
   sigverify_rsa_buffer_t enc_msg;
