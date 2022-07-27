@@ -2,7 +2,7 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-load("@//rules:repo.bzl", "http_archive_or_local")
+load("//rules:repo.bzl", "http_archive_or_local")
 
 def bazel_embedded_repos(bazel_embedded = None, platforms = None):
     # Contains rules that support building SW for embedded targets. Specifically, we
