@@ -29,7 +29,13 @@ extern ct_boolw_t ct_seqw(uintptr_t, uintptr_t);
 extern uintptr_t ct_cmovw(ct_boolw_t, uintptr_t, uintptr_t);
 
 #ifndef OT_PLATFORM_RV32
-_Noreturn __attribute__((weak)) void hardened_unreachable(const char *file, int line) {
+
+OT_WEAK void hardened_check(const char *file, int line, bool result) {
+  assert(result);
+}
+
+OT_WEAK void hardened_unreachable(const char *file, int line) {
   assert(false);
 }
+
 #endif

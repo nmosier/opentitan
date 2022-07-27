@@ -551,6 +551,8 @@ inline uintptr_t ct_cmovw(ct_boolw_t c, uintptr_t a, uintptr_t b) {
   } while (false)
 #else  // OT_PLATFORM_RV32
 #include <assert.h>
+#include <stdbool.h>
+#include <stdnoreturn.h>
 
 #define HARDENED_CHECK_OP_EQ_ ==
 #define HARDENED_CHECK_OP_NE_ !=
@@ -559,9 +561,10 @@ inline uintptr_t ct_cmovw(ct_boolw_t c, uintptr_t a, uintptr_t b) {
 #define HARDENED_CHECK_OP_LE_ <=
 #define HARDENED_CHECK_OP_GE_ >=
 
-#define HARDENED_CHECK_(op_, a_, b_) assert((uint64_t)(a_)op_(uint64_t)(b_))
+void hardened_check(const char *file, int line, bool result);
+#define HARDENED_CHECK_(op_, a_, b_) hardened_check(__FILE__, __LINE__, (uint64_t) (a_) op_ (uint64_t) (b_))
 
-_Noreturn void hardened_unreachable(const char *file, int line);
+noreturn void hardened_unreachable(const char *file, int line);
 #define HARDENED_UNREACHABLE_() (hardened_unreachable(__FILE__, __LINE__))
 
 #endif  // OT_PLATFORM_RV32
