@@ -405,4 +405,6 @@
   if (expr_) {            \
   }
 
+#define OT_NORETURN _Noreturn
+
 #endif  // OPENTITAN_SW_DEVICE_LIB_BASE_MACROS_H_

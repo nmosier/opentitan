@@ -2,9 +2,11 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
-#include "sw/device/silicon_creator/lib/drivers/mock_otp.h"
-
 #ifndef FUZZ
+
+#error error
+
+#include "sw/device/silicon_creator/lib/drivers/mock_otp.h"
 
 namespace mask_rom_test {
 extern "C" {

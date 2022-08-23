@@ -374,7 +374,9 @@ static rom_error_t mask_rom_boot(const manifest_t *manifest,
 
   // Jump to ROM_EXT entry point.
   CFI_FUNC_COUNTER_INCREMENT(rom_counters, kCfiRomBoot, 5);
+#ifndef FUZZ
   ((rom_ext_entry_point *)entry_point)();
+#endif
 
   return kErrorMaskRomBootFailed;
 }

@@ -240,7 +240,9 @@ inline uint32_t launder32(uint32_t val) {
   // The +r constraint tells the compiler that this is an "inout" parameter: it
   // means that not only does the black box depend on `val`, but it also mutates
   // it in an unspecified way.
+#ifndef FUZZ
   asm volatile("" : "+r"(val));
+#endif
   return val;
 }
 
@@ -254,7 +256,9 @@ inline uint32_t launder32(uint32_t val) {
  *         runtime.
  */
 inline uintptr_t launderw(uintptr_t val) {
+#ifndef FUZZ
   asm volatile("" : "+r"(val));
+#endif
   return val;
 }
 
@@ -345,7 +349,11 @@ inline uintptr_t launderw(uintptr_t val) {
  *
  * @param val A value to create a barrier for.
  */
+#ifndef FUZZ
 inline void barrier32(uint32_t val) { asm volatile("" ::"r"(val)); }
+#else
+inline void barrier32(uint32_t val) {}
+#endif
 
 /**
  * Creates a reordering barrier for `val`.
@@ -354,7 +362,11 @@ inline void barrier32(uint32_t val) { asm volatile("" ::"r"(val)); }
  *
  * @param val A value to create a barrier for.
  */
+#ifndef FUZZ
 inline void barrierw(uintptr_t val) { asm volatile("" ::"r"(val)); }
+#else
+inline void barrierw(uintptr_t val) {}
+#endif
 
 /**
  * A constant-time, 32-bit boolean value.
@@ -552,7 +564,6 @@ inline uintptr_t ct_cmovw(ct_boolw_t c, uintptr_t a, uintptr_t b) {
 #else  // OT_PLATFORM_RV32
 #include <assert.h>
 #include <stdbool.h>
-#include <stdnoreturn.h>
 
 #define HARDENED_CHECK_OP_EQ_ ==
 #define HARDENED_CHECK_OP_NE_ !=
@@ -564,7 +575,7 @@ inline uintptr_t ct_cmovw(ct_boolw_t c, uintptr_t a, uintptr_t b) {
 void hardened_check(const char *file, int line, bool result);
 #define HARDENED_CHECK_(op_, a_, b_) hardened_check(__FILE__, __LINE__, (uint64_t) (a_) op_ (uint64_t) (b_))
 
-noreturn void hardened_unreachable(const char *file, int line);
+OT_NORETURN void hardened_unreachable(const char *file, int line);
 #define HARDENED_UNREACHABLE_() (hardened_unreachable(__FILE__, __LINE__))
 
 #endif  // OT_PLATFORM_RV32

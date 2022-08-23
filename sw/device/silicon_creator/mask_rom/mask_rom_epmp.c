@@ -9,10 +9,16 @@
 
 #include "hw/top_earlgrey/sw/autogen/top_earlgrey.h"
 
+#ifndef FUZZ
 // Symbols defined in linker script.
 extern char _stack_start[];  // Lowest stack address.
 extern char _text_start[];   // Start of executable code.
 extern char _text_end[];     // End of executable code.
+#else
+const uintptr_t _stack_start = 0;
+const uintptr_t _text_start = 0;
+const uintptr_t _text_end = 0;
+#endif
 
 void mask_rom_epmp_state_init(epmp_state_t *state, lifecycle_state_t lc_state) {
   // Address space definitions.

@@ -33,7 +33,7 @@ static rom_error_t is_locked(void) {
   return kErrorOk;
 }
 
-OT_WEAK volatile retention_sram_t *retention_sram_get(void) {
+__attribute__((weak)) volatile retention_sram_t *retention_sram_get(void) {
   static_assert(sizeof(retention_sram_t) == TOP_EARLGREY_RAM_RET_AON_SIZE_BYTES,
                 "Unexpected retention SRAM size.");
   return (volatile retention_sram_t *)TOP_EARLGREY_RAM_RET_AON_BASE_ADDR;

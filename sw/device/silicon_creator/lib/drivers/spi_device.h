@@ -357,3 +357,4 @@ uint32_t spi_device_flash_status_get(void);
 #endif
 
 #endif  // OPENTITAN_SW_DEVICE_SILICON_CREATOR_LIB_DRIVERS_SPI_DEVICE_H_
+

@@ -152,6 +152,7 @@ static void fifo_write(size_t word_count, const void *data) {
  * @param error Error code to return in case of a flash controller error.
  * @return The result of the operation.
  */
+#ifndef FUZZ
 static rom_error_t wait_for_done(rom_error_t error) {
   uint32_t op_status;
   do {
@@ -164,6 +165,10 @@ static rom_error_t wait_for_done(rom_error_t error) {
   }
   return kErrorOk;
 }
+#else
+extern rom_error_t flash_ctrl_wait_for_done(rom_error_t error);
+#define wait_for_done flash_ctrl_wait_for_done
+#endif
 
 /**
  * Writes data to the given partition.
@@ -432,6 +437,10 @@ rom_error_t flash_ctrl_data_erase_verify(uint32_t addr,
         abs_mmio_read32(TOP_EARLGREY_FLASH_CTRL_MEM_BASE_ADDR + addr + i);
     mask &= word;
     error &= word;
+#ifdef FUZZ
+    i = byte_count;
+    break;
+#endif        
   }
   HARDENED_CHECK_EQ(i, byte_count);
 

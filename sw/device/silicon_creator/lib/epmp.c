@@ -19,13 +19,25 @@ extern void epmp_state_configure_napot(epmp_state_t *state, uint32_t entry,
 
 rom_error_t epmp_state_check(const epmp_state_t *s) {
   uint32_t checks = 0;
-#define CHECK_CSR(reg, value) \
-  do {                        \
-    uint32_t csr;             \
-    CSR_READ(reg, &csr);      \
-    checks += csr == (value); \
+#ifndef FUZZ
+#define CHECK_CSR(reg, value)      \
+  do {                             \
+    uint32_t csr;                  \
+    CSR_READ(reg, &csr);           \
+    checks += csr == (value);      \
   } while (false)
-
+#else
+#define CHECK_CSR(reg, value)      \
+  do {                             \
+    uint32_t csr;                  \
+    CSR_READ(reg, &csr);           \
+    if (csr != (value)) {          \
+        return kErrorEpmpBadCheck; \
+    }                              \
+    ++checks;                      \
+  } while (false)
+#endif
+                    
   // Check address registers.
   CHECK_CSR(CSR_REG_PMPADDR0, s->pmpaddr[0]);
   CHECK_CSR(CSR_REG_PMPADDR1, s->pmpaddr[1]);

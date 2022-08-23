@@ -9,6 +9,8 @@
 // The symbols below are all provided by the host libc. To avoid linker clashes,
 // they are all marked as `OT_WEAK`.
 
+#ifndef FUZZ
+
 OT_WEAK
 void *memcpy(void *restrict dest, const void *restrict src, size_t len) {
   uint8_t *dest8 = (uint8_t *)dest;
@@ -90,6 +92,8 @@ void *memrchr(const void *ptr, int value, size_t len) {
   return NULL;
 }
 
+#endif  // FUZZ
+
 // `extern` declarations to give the inline functions in the corresponding
 // header a link location.
 
@@ -98,3 +102,4 @@ extern uint32_t read_32(const void *);
 extern void write_32(uint32_t, void *);
 extern uint64_t read_64(const void *);
 extern void write_64(uint64_t, void *);
+

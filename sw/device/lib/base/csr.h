@@ -46,7 +46,11 @@ extern "C" {
  * constraint means the error for mocked and real implementation should be very
  * similar.
  */
+#ifdef FUZZ
+#define CSR_FORCE_CONST_EXPR(x)
+#else
 #define CSR_FORCE_CONST_EXPR(x) asm volatile("" ::"i"(x))
+#endif
 
 uint32_t mock_csr_read(uint32_t addr);
 

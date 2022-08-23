@@ -67,6 +67,7 @@ static bool uart_tx_idle(void) {
   return bitfield_bit32_read(reg, UART_STATUS_TXIDLE_BIT);
 }
 
+#ifndef FUZZ
 void uart_putchar(uint8_t byte) {
   // If the transmit FIFO is full, wait.
   while (uart_tx_full()) {
@@ -78,6 +79,9 @@ void uart_putchar(uint8_t byte) {
   while (!uart_tx_idle()) {
   }
 }
+#else
+extern void uart_putchar(uint8_t byte);
+#endif
 
 /**
  * Write `len` bytes to the UART TX FIFO.

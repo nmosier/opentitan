@@ -49,6 +49,7 @@ inline ptrdiff_t misalignment32_of(uintptr_t addr) {
  * @param ptr a word-aligned pointer pointed to at least four bytes of memory.
  * @return the word `ptr` points to.
  */
+#ifndef FUZZ
 inline uint32_t read_32(const void *ptr) {
   // Both GCC and Clang optimize the code below into a single word-load on most
   // platforms. It is necessary and sufficient to indicate to the compiler that
@@ -62,7 +63,9 @@ inline uint32_t read_32(const void *ptr) {
   __builtin_memcpy(&val, ptr, sizeof(uint32_t));
   return val;
 }
-
+#else
+extern uint32_t read_32(const void *ptr);
+#endif
 /**
  * Load a 64-bit word from memory directly, bypassing aliasing rules.
  *
